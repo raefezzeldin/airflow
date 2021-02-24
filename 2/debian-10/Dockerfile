@@ -4,7 +4,7 @@ LABEL maintainer "Bitnami <containers@bitnami.com>"
 ENV BITNAMI_PKG_CHMOD="-R g+rwX" \
     BITNAMI_PKG_EXTRA_DIRS="/opt/bitnami/airflow/dags" \
     HOME="/" \
-    PATH="/opt/bitnami/python/bin:/opt/bitnami/postgresql/bin:/opt/bitnami/common/bin:/opt/bitnami/airflow/venv/bin:/opt/bitnami/nami/bin:$PATH"
+    PATH="/opt/bitnami/python/bin:/opt/bitnami/postgresql/bin:/opt/bitnami/common/bin:/opt/bitnami/airflow/venv/bin:/opt/bitnami/nami/bin:/opt/bitnami/java/bin:$PATH"
 
 COPY prebuildfs /
 # Install required system packages and dependencies
@@ -24,6 +24,7 @@ RUN localedef -c -f UTF-8 -i en_US en_US.UTF-8
 RUN update-locale LANG=C.UTF-8 LC_MESSAGES=POSIX && \
     DEBIAN_FRONTEND=noninteractive dpkg-reconfigure locales
 RUN echo 'en_US.UTF-8 UTF-8' >> /etc/locale.gen && locale-gen
+
 
 COPY rootfs /
 RUN /opt/bitnami/scripts/locales/add-extra-locales.sh
@@ -76,7 +77,9 @@ ENV AIRFLOW_BASE_URL="" \
     REDIS_HOST="redis" \
     REDIS_PASSWORD="" \
     REDIS_PORT_NUMBER="6379" \
-    REDIS_USER=""
+    REDIS_USER="" \
+    JAVA_HOME="/opt/bitnami/java" \
+    PATH="/opt/bitnami/java/bin:$PATH"
 
 EXPOSE 8080
 
