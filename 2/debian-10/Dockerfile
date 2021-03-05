@@ -25,7 +25,7 @@ RUN localedef -c -f UTF-8 -i en_US en_US.UTF-8
 RUN update-locale LANG=C.UTF-8 LC_MESSAGES=POSIX && \
     DEBIAN_FRONTEND=noninteractive dpkg-reconfigure locales
 RUN echo 'en_US.UTF-8 UTF-8' >> /etc/locale.gen && locale-gen
-RUN /build/bitnami-user.sh
+
 
 
 COPY rootfs /
@@ -83,7 +83,17 @@ ENV AIRFLOW_BASE_URL="" \
 
 EXPOSE 8080
 
+RUN apt-get update && \
+    apt-get -y install sudo
 
-USER 1001
+RUN adduser --disabled-password --gecos '' tpaybigdata \
+    && adduser tpaybigdata sudo \
+    && echo '%sudo ALL=(ALL:ALL) ALL' >> /etc/sudoers
+
+USER tpaybigdata
+
+RUN mkdir -p /opt/bitnami/airflow/dags/git-airflow-dev-dagbag/TalendJobs
+WORKDIR /opt/bitnami/airflow/dags/git-airflow-dev-dagbag/TalendJobs
+
 ENTRYPOINT [ "/app-entrypoint.sh" ]
 CMD [ "/run.sh" ]
