@@ -1,7 +1,7 @@
 FROM docker.io/bitnami/minideb:buster
 LABEL maintainer "TPayMobile <BigData@tpaymobile.com>"
 
-ENV BITNAMI_PKG_CHMOD="-R a+rwX" \
+ENV BITNAMI_PKG_CHMOD="-R g+rwX" \
     BITNAMI_PKG_EXTRA_DIRS="/opt/bitnami/airflow/dags" \
     HOME="/" \
     PATH="/opt/bitnami/python/bin:/opt/bitnami/postgresql/bin:/opt/bitnami/common/bin:/opt/bitnami/airflow/venv/bin:/opt/bitnami/nami/bin:/opt/bitnami/java/bin:$PATH" \
@@ -83,7 +83,7 @@ ENV AIRFLOW_BASE_URL="" \
 
 EXPOSE 8080
 
-RUN chmod -R 777 /opt/bitnami/airflow/dags
-USER root
+
+USER 1001
 ENTRYPOINT [ "/app-entrypoint.sh" ]
 CMD [ "/run.sh" ]
