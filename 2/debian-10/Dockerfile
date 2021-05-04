@@ -83,7 +83,6 @@ ENV AIRFLOW_BASE_URL="" \
 
 EXPOSE 8080
 
-RUN chmod -R 777 /opt/bitnami/airflow/dags
-USER root
+USER 1001
 ENTRYPOINT [ "/app-entrypoint.sh" ]
 CMD [ "/run.sh" ]
